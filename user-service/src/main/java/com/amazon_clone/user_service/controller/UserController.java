@@ -19,13 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserServiceImpl userServiceImpl;
+//    get-/user/profile
+//    put-/user/update
+//    delete-/user/delete
+//    get-user/all
+//    get-/user/{id}
 
-    @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> registerUser(@Validated @RequestBody UserRequestDTO userRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userServiceImpl.createUser(userRequestDTO));
-    }
 
 }

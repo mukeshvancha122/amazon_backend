@@ -6,13 +6,14 @@ import com.amazon_clone.user_service.entity.User;
 import com.amazon_clone.user_service.exceptions.UserNotFoundException;
 import com.amazon_clone.user_service.mappers.UserMapper;
 import com.amazon_clone.user_service.repository.UserRepository;
+import com.amazon_clone.user_service.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;

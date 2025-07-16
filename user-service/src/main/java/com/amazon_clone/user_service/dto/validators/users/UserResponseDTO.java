@@ -13,6 +13,15 @@ public class UserResponseDTO {
     private String phoneNumber;
     private String role;
 
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    private LocalDate createdAt;
     public UUID getId() {
         return id;
     }
