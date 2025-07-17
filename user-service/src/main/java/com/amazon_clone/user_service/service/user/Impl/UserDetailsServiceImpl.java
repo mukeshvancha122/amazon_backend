@@ -1,6 +1,7 @@
 package com.amazon_clone.user_service.service.user.Impl;
 
 
+import com.amazon_clone.user_service.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // Load user from database using username
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
+        Optional<com.amazon_clone.user_service.entity.User> optionalUser = userRepository.findByUsername(username);
         User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         // Return a Spring Security user object
         return new org.springframework.security.core.userdetails.User(
-                user.getUserName(),
+                user.getUsername(),
                 user.getPassword(),
                 Collections.emptyList() // No roles/authorities for now
         );
