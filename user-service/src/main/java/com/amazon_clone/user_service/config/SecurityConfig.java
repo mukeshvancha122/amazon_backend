@@ -59,18 +59,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,HandlerMappingIntrospector introspector) throws Exception {
 
-        MvcRequestMatcher registerMatcher=new MvcRequestMatcher(introspector, "/api/auth/register");
+        MvcRequestMatcher registerMatcher=new MvcRequestMatcher(introspector, "/**");
         registerMatcher.setServletPath("/");
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for stateless API
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(registerMatcher)
+                .authorizeHttpRequests(auth -> auth.anyRequest()
+//                                .requestMatchers(registerMatcher)
                                 .permitAll()
-                        .anyRequest().authenticated()                // Secure everything else
+//                        .anyRequest().authenticated()                // Secure everything else
                 )
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+//                .authenticationProvider(authenticationProvider())
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

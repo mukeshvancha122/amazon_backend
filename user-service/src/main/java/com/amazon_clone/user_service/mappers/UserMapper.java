@@ -3,17 +3,20 @@ package com.amazon_clone.user_service.mappers;
 import com.amazon_clone.user_service.dto.validators.users.UserRequestDTO;
 import com.amazon_clone.user_service.dto.validators.users.UserResponseDTO;
 import com.amazon_clone.user_service.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserMapper {
 
-    public static User toEntity(UserRequestDTO userRequestDTO) {
+
+    public static User toEntity(UserRequestDTO userRequestDTO, PasswordEncoder passwordEncoder) {
         User user = new User();
         user.setUsername(userRequestDTO.getUsername());
         user.setFirstName(userRequestDTO.getFirstName());
         user.setLastName(userRequestDTO.getLastName());
         user.setEmail(userRequestDTO.getEmail());
         user.setPhoneNumber(userRequestDTO.getPhoneNumber());
-        user.setPassword(userRequestDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         return user;
     }
 

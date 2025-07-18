@@ -8,6 +8,7 @@ import com.amazon_clone.user_service.mappers.UserMapper;
 import com.amazon_clone.user_service.repository.UserRepository;
 import com.amazon_clone.user_service.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<UserResponseDTO> getAllUsers() {
         try {
@@ -41,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO){
         try{
-            User user=UserMapper.toEntity(userRequestDTO);
+            User user=UserMapper.toEntity(userRequestDTO,passwordEncoder);
             User savedUser= userRepository.save(user);
             return UserMapper.toResponseDTO(savedUser);
         }
