@@ -37,11 +37,14 @@ public class AuthServiceImpl implements AuthService {
         return null;
     }
     public AuthResponseDTO register(UserRequestDTO dto) {
-        userServiceImpl.createUser(dto);
+        String token=null;
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword())
         );
-        String token = jwtUtil.generateToken(auth.getName());
+        if(auth!=null){
+            userServiceImpl.createUser(dto);
+            token = jwtUtil.generateToken(auth.getName());
+        }
         System.out.println("Name:" + auth.getName());
         return new AuthResponseDTO("Registration successful", token);
     }
