@@ -11,6 +11,7 @@ public class AuthRequestDTO {
     @NotNull
     private String password;
 
+
     public String getUsername() {
         return username;
     }

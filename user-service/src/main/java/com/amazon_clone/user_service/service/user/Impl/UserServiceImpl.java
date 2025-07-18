@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -51,6 +52,49 @@ public class UserServiceImpl implements UserService {
         }
         catch (Exception e){
             throw new RuntimeException("Failed to create user", e);
+        }
+    }
+
+    @Override
+    public UserResponseDTO updateUser(UserRequestDTO userRequestDTO, UUID id) {
+        try{
+            User existingUser= userRepository.findById(id).orElseThrow();
+            User user=UserMapper.toEntity(userRequestDTO, passwordEncoder);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public UserResponseDTO getUserById(UUID id) {
+        try{
+            User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+            return UserMapper.toResponseDTO(user);
+        } catch (UserNotFoundException e) {
+            // Custom exception handling
+            System.out.println("Custom Exception: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            // General fallback
+            System.out.println("Exception: " + e.getMessage());
+            throw new RuntimeException("Failed to fetch user", e);
+        }
+    }
+
+    @Override
+    public void deleteUser(UUID id) {
+        try {
+            User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
+            userRepository.delete(user);
+        } catch (UserNotFoundException e) {
+            // Custom exception handling
+            System.out.println("Custom Exception: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            // General fallback
+            System.out.println("Exception: " + e.getMessage());
+            throw new RuntimeException("Failed to delete user", e);
         }
     }
 
