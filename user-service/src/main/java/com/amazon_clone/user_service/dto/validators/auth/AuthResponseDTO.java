@@ -6,6 +6,16 @@ public class AuthResponseDTO {
 
     @NotNull
     private String token;
+    @NotNull
+    private String message;
+
+    public AuthResponseDTO(String registrationSuccessful, String token) {
+        this.message = registrationSuccessful;
+        this.token = token;
+    }
+
+    public AuthResponseDTO() {
+    }
 
     public String getMessage() {
         return message;
@@ -23,8 +33,7 @@ public class AuthResponseDTO {
         this.token = token;
     }
 
-    @NotNull
-    private String message;
+
 
 
 }

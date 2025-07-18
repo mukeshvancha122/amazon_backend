@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
@@ -41,28 +43,23 @@ public class AuthController {
     private AuthServiceImpl authServiceImpl;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> registerUser(@Validated @RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<AuthResponseDTO> registerUser(@Validated @RequestBody UserRequestDTO userRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userServiceImpl.createUser(userRequestDTO));
+                .body(authServiceImpl.register(userRequestDTO));
     }
-//    login
-//    @PostMapping("/login")
-//    public ResponseEntity<AuthResponseDTO> loginUser(@Validated @RequestBody AuthRequestDTO authRequestDTO) {
-//        return ResponseEntity.status(HttpStatus.CREATED)
-//                .body(authServiceImpl.login(authRequestDTO));
-//    }
 
     @PostMapping("/login")
     public AuthResponseDTO login(@RequestBody AuthRequestDTO request) {
         try {
             // Authenticate username and password
-            authenticationManager.authenticate(
+            Authentication authentication=authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
 
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             // Load user and generate token
-            UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-            String token = jwtUtil.generateToken(userDetails.getUsername());
+//            UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+            String token = jwtUtil.generateToken(String.valueOf(authentication));
 
             // Send response
             AuthResponseDTO response = new AuthResponseDTO();

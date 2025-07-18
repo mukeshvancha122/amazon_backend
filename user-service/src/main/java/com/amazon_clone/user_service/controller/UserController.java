@@ -10,16 +10,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-//    get-/user/profile
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+
+    //    get-/user/profileall
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(userServiceImpl.getAllUsers());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to fetch users: " + e.getMessage());
+        }
+    }
 //    put-/user/update
 //    delete-/user/delete
 //    get-user/all

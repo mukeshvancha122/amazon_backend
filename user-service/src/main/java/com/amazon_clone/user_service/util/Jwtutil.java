@@ -4,10 +4,12 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 
+@Component
 //creation and validation of the key is taken place in this class
 public class Jwtutil {
 
@@ -20,6 +22,9 @@ public class Jwtutil {
 
     @PostConstruct
     public void init() {
+        if(SECRET_KEY.length() < 32) {
+            throw new IllegalArgumentException("Secret key must be at least 32 characters long in user-service");
+        }
         // Convert secret key string into a signing key using HS256
         signingKey = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
