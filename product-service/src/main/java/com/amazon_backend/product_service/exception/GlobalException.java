@@ -20,6 +20,7 @@ public class GlobalException extends RuntimeException {
 
         return ResponseEntity.badRequest().body(errors);
     }
+
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<Map<String,String>> handleProductNotFoundException(ProductNotFoundException ex) {
         Map<String, String> errors = new HashMap<>();

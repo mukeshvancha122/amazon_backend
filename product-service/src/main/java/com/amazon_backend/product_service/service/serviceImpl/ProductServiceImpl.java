@@ -10,15 +10,16 @@ import com.amazon_backend.product_service.mapper.ProductMapper;
 import com.amazon_backend.product_service.repository.ProductRepository;
 import com.amazon_backend.product_service.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductRepository productRepository;
-
 
 
     @Override
@@ -54,24 +55,42 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDTO updateProduct(ProductRequestDTO productRequestDTO, UUID id) {
+        Product product=productRepository.findById(id)
+                .orElseThrow(()->new ProductNotFoundException("Product not found with id: " + id));
+        product.setProductName(productRequestDTO.getProductName());
+        product.setProductDescription(productRequestDTO.getProductDescription());
+        product.setPrice(productRequestDTO.getPrice());
+        product.setQuantity(productRequestDTO.getQuantity());
+        Product updatedProduct= productRepository.save(product);
 
-
-        return null;
+        return ProductMapper.toResponseDTO(updatedProduct);
     }
 
     @Override
     public ProductResponseDTO updateProductQuantity(UUID id, int quantity) {
-        return null;
+        Product product=  productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+        product.setQuantity(quantity);
+        Product updatedProduct=productRepository.save(product);
+        return ProductMapper.toResponseDTO(updatedProduct);
     }
 
     @Override
     public ProductResponseDTO updateProductPrice(UUID id, int price) {
-        return null;
+        Product product=  productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+        product.setPrice(price);
+        Product updatedProduct=productRepository.save(product);
+        return ProductMapper.toResponseDTO(updatedProduct);
     }
 
     @Override
     public ProductResponseDTO updateProductDescription(UUID productId, String description) {
-        return null;
+        Product product=  productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
+        product.setProductDescription(description);
+        Product updatedProduct=productRepository.save(product);
+        return ProductMapper.toResponseDTO(updatedProduct);
     }
 
     @Override
