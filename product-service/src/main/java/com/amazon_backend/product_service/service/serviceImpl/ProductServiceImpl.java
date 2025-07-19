@@ -7,6 +7,7 @@ import com.amazon_backend.product_service.entity.Category;
 import com.amazon_backend.product_service.entity.Product;
 import com.amazon_backend.product_service.exception.ProductNotFoundException;
 import com.amazon_backend.product_service.mapper.ProductMapper;
+import com.amazon_backend.product_service.repository.CategoryRepository;
 import com.amazon_backend.product_service.repository.ProductRepository;
 import com.amazon_backend.product_service.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public List<ProductResponseDTO> getAllProducts() {
@@ -97,7 +100,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponseDTO updateProductCategory(UUID productId, UUID categoryId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
-        Category category=productRepository.findCategoryById(categoryId)
+        Category category=categoryRepository.findCategoryByCategoryId(categoryId)
                 .orElseThrow(() -> new ProductNotFoundException("Category not found with id: " + categoryId));
 
         product.setCategory(category);

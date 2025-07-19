@@ -4,11 +4,12 @@ import com.amazon_backend.product_service.entity.Review;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ProductResponseDTO {
 
     @NotNull
-    private String productId;
+    private UUID productId;
 
     @NotNull
     private String productDescription;
@@ -26,11 +27,11 @@ public class ProductResponseDTO {
     private List<Review> reviews;
 
 
-    public String getProductId() {
+    public UUID getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(UUID productId) {
         this.productId = productId;
     }
 

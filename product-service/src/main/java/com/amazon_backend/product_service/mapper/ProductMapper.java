@@ -17,7 +17,7 @@ public class ProductMapper {
 
     public static ProductResponseDTO toResponseDTO(Product product){
         ProductResponseDTO productResponseDTO = new ProductResponseDTO();
-        productResponseDTO.setProductId(product.getProductId().toString());
+        productResponseDTO.setProductId(product.getProductId());
         productResponseDTO.setProductDescription(product.getProductDescription());
         productResponseDTO.setPrice(product.getPrice());
         productResponseDTO.setQuantity(product.getQuantity());

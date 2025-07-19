@@ -56,7 +56,7 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private List<Review> reviews;
 
-    public String getProductId() {
+    public UUID getProductId() {
         return productId;
     }
 
